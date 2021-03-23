@@ -16,7 +16,7 @@ function App() {
   const [currentSong, setCurrentSong] = useState(songs[0]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [libraryStatus, setLibraryStatus] = useState(false);
-  const [fullscreenStatus, setFullscreenStatus] = useState(true);
+  const [fullscreenStatus, setFullscreenStatus] = useState(false);
 
   //Ref
   const audioRef = useRef(null);
@@ -69,6 +69,7 @@ function App() {
           songs={songs}
           setCurrentSong={setCurrentSong}
           setSongs={setSongs}
+          fullscreenStatus={fullscreenStatus}
         />
         <Library
           isPlaying={isPlaying}
@@ -96,7 +97,6 @@ function App() {
         fullscreenStatus={fullscreenStatus}
         setFullscreenStatus={setFullscreenStatus}
       />
-      <Song currentSong={currentSong} fullscreenStatus={fullscreenStatus} />
       <Player
         currentSong={currentSong}
         audioRef={audioRef}

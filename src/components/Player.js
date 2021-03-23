@@ -9,11 +9,11 @@ import {
   faVolumeUp,
 } from "@fortawesome/free-solid-svg-icons";
 
-function Greeting(props) {
+function NormalSong(props) {
   const isFullscreen = props.isFullscreen;
   const currentSong = props.currentSong;
 
-  if (isFullscreen) {
+  if (!isFullscreen) {
     return <Song currentSong={currentSong} fullscreenStatus={isFullscreen} />;
   }
   return "";
@@ -108,58 +108,117 @@ const Player = ({
     transform: `translateX(${currentVolume * 100}%)`,
   };
 
-  return (
-    <div className="player">
-      <div className="time-control">
-        <Greeting isFullscreen={fullscreenStatus} currentSong={currentSong} />
-        <p>{getTime(songInfo.currentTime)}</p>
-        <div
-          style={{
-            background: `linear-gradient(to right, ${currentSong.color[0]},${currentSong.color[1]})`,
-          }}
-          className="track"
-        >
-          <input
-            min={0}
-            max={songInfo.duration}
-            value={songInfo.currentTime}
-            onChange={dragHandler}
-            type="range"
+  let returnedPlay = false;
+
+  const renderNormalSong = () => {
+    console.log(fullscreenStatus);
+    if (!fullscreenStatus) {
+      return (
+        <Song currentSong={currentSong} fullscreenStatus={fullscreenStatus} />
+      );
+    }
+  };
+
+  const playControlFullscreen = () => {
+    if (fullscreenStatus) {
+      returnedPlay = true;
+      return (
+        <div className="play-control-fullscreen">
+          <FontAwesomeIcon
+            className="skip-back"
+            onClick={() => skipTrackhanlder("skip-back")}
+            size="2x"
+            icon={faAngleLeft}
           />
-          <div style={trackAnim} className="animate-track"></div>
+          <FontAwesomeIcon
+            onClick={playSongHanlder}
+            className="play"
+            size="2x"
+            icon={isPlaying ? faPause : faPlay}
+          />
+          <FontAwesomeIcon
+            className="skip-forward"
+            onClick={() => skipTrackhanlder("skip-forward")}
+            size="2x"
+            icon={faAngleRight}
+          />
         </div>
-        <p>{getTime(songInfo.duration)}</p>
-      </div>
-      <div className="play-control">
-        <FontAwesomeIcon
-          className="skip-back"
-          onClick={() => skipTrackhanlder("skip-back")}
-          size="2x"
-          icon={faAngleLeft}
-        />
-        <FontAwesomeIcon
-          onClick={playSongHanlder}
-          className="play"
-          size="2x"
-          icon={isPlaying ? faPause : faPlay}
-        />
-        <FontAwesomeIcon
-          className="skip-forward"
-          onClick={() => skipTrackhanlder("skip-forward")}
-          size="2x"
-          icon={faAngleRight}
-        />
-      </div>
-      <div className="volume-control">
-        <FontAwesomeIcon className="skip-forward" size="2x" icon={faVolumeUp} />
-        <div
-          style={{
-            background: `linear-gradient(to right, ${currentSong.color[0]},${currentSong.color[1]})`,
-          }}
-          className="volume"
-        >
-          <input min={0} max={100} onChange={changVolumeHandler} type="range" />
-          <div style={volumeAnim} className="animate-track"></div>
+      );
+    }
+  };
+
+  const playControlNormal = () => {
+    if (!fullscreenStatus) {
+      return (
+        <div className="play-control">
+          <FontAwesomeIcon
+            className="skip-back"
+            onClick={() => skipTrackhanlder("skip-back")}
+            size="1x"
+            icon={faAngleLeft}
+          />
+          <FontAwesomeIcon
+            onClick={playSongHanlder}
+            className="play"
+            size="1x"
+            icon={isPlaying ? faPause : faPlay}
+          />
+          <FontAwesomeIcon
+            className="skip-forward"
+            onClick={() => skipTrackhanlder("skip-forward")}
+            size="1x"
+            icon={faAngleRight}
+          />
+        </div>
+      );
+    }
+  };
+
+  return (
+    <div class={`${fullscreenStatus ? "" : "normal-container"}`}>
+      {playControlNormal()}
+      <div className={`${fullscreenStatus ? "player-fullscreen" : "player"}`}>
+        {renderNormalSong()}
+        <div className="time-control">
+          <p>{getTime(songInfo.currentTime)}</p>
+          <div
+            style={{
+              background: `linear-gradient(to right, ${currentSong.color[0]},${currentSong.color[1]})`,
+            }}
+            className="track"
+          >
+            <input
+              min={0}
+              max={songInfo.duration}
+              value={songInfo.currentTime}
+              onChange={dragHandler}
+              type="range"
+            />
+            <div style={trackAnim} className="animate-track"></div>
+          </div>
+          <p>{getTime(songInfo.duration)}</p>
+        </div>
+        {playControlFullscreen()}
+        <div className="volume-control">
+          <FontAwesomeIcon
+            className="skip-forward"
+            size="2x"
+            icon={faVolumeUp}
+          />
+          <div
+            style={{
+              background: `linear-gradient(to right, ${currentSong.color[0]},${currentSong.color[1]})`,
+            }}
+            className="volume"
+          >
+            <input
+              min={0}
+              max={100}
+              onChange={changVolumeHandler}
+              type="range"
+            />
+            <div style={volumeAnim} className="animate-track"></div>
+          </div>
         </div>
       </div>
     </div>

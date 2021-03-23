@@ -1,4 +1,22 @@
+.normal-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  left: 10%;
+  bottom: 0;
+}
+
 .player {
+  min-height: 20vh;
+  max-height: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.player-fullscreen {
   min-height: 20vh;
   display: flex;
   flex-direction: column;
@@ -18,6 +36,20 @@
 }
 
 .play-control {
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 15%;
+  position: relative;
+  top: 50px;
+  left: 40px;
+  svg {
+    cursor: pointer;
+  }
+}
+
+.play-control-fullscreen {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -26,6 +58,24 @@
   svg {
     cursor: pointer;
   }
+}
+
+.volume-control {
+  width: 30%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  svg {
+    padding: 1px 3px;
+  }
+}
+
+.volume {
+  width: 30%;
+  height: 1rem;
+  border-radius: 1rem;
+  overflow: hidden;
+  position: relative;
 }
 
 input {
@@ -69,24 +119,6 @@ input[type="range"]::-moz-range-thumb {
   transform: translateX(0%);
   pointer-events: none;
   padding: 1rem;
-}
-
-.volume-control {
-  width: 30%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  svg {
-    padding: 1px 3px;
-  }
-}
-
-.volume {
-  width: 100%;
-  height: 1rem;
-  border-radius: 1rem;
-  overflow: hidden;
-  position: relative;
 }
 
 @media screen and (max-width: 768px) {
