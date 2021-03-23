@@ -176,27 +176,29 @@ const Player = ({
 
   return (
     <div class={`${fullscreenStatus ? "" : "normal-container"}`}>
-      {playControlNormal()}
       <div className={`${fullscreenStatus ? "player-fullscreen" : "player"}`}>
         {renderNormalSong()}
         <div className="time-control">
-          <p>{getTime(songInfo.currentTime)}</p>
-          <div
-            style={{
-              background: `linear-gradient(to right, ${currentSong.color[0]},${currentSong.color[1]})`,
-            }}
-            className="track"
-          >
-            <input
-              min={0}
-              max={songInfo.duration}
-              value={songInfo.currentTime}
-              onChange={dragHandler}
-              type="range"
-            />
-            <div style={trackAnim} className="animate-track"></div>
+          {playControlNormal()}
+          <div className="time-container">
+            <p>{getTime(songInfo.currentTime)}</p>
+            <div
+              style={{
+                background: `linear-gradient(to right, ${currentSong.color[0]},${currentSong.color[1]})`,
+              }}
+              className="track"
+            >
+              <input
+                min={0}
+                max={songInfo.duration}
+                value={songInfo.currentTime}
+                onChange={dragHandler}
+                type="range"
+              />
+              <div style={trackAnim} className="animate-track"></div>
+            </div>
+            <p>{getTime(songInfo.duration)}</p>
           </div>
-          <p>{getTime(songInfo.duration)}</p>
         </div>
         {playControlFullscreen()}
         <div className="volume-control">
