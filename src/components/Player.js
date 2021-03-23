@@ -108,8 +108,6 @@ const Player = ({
     transform: `translateX(${currentVolume * 100}%)`,
   };
 
-  let returnedPlay = false;
-
   const renderNormalSong = () => {
     console.log(fullscreenStatus);
     if (!fullscreenStatus) {
@@ -121,7 +119,6 @@ const Player = ({
 
   const playControlFullscreen = () => {
     if (fullscreenStatus) {
-      returnedPlay = true;
       return (
         <div className="play-control-fullscreen">
           <FontAwesomeIcon

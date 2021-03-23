@@ -5,7 +5,6 @@ import {
   faExpand,
   faCompress,
 } from "@fortawesome/free-solid-svg-icons";
-import { library } from "@fortawesome/fontawesome-svg-core";
 
 const Nav = ({
   libraryStatus,
