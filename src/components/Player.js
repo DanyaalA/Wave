@@ -1,11 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Song from "./Song";
 import {
   faPlay,
   faAngleLeft,
   faAngleRight,
   faPause,
+  faVolumeUp,
 } from "@fortawesome/free-solid-svg-icons";
+
+function Greeting(props) {
+  const isFullscreen = props.isFullscreen;
+  const currentSong = props.currentSong;
+
+  if (isFullscreen) {
+    return <Song currentSong={currentSong} fullscreenStatus={isFullscreen} />;
+  }
+  return "";
+}
 
 const Player = ({
   audioRef,
@@ -17,7 +29,10 @@ const Player = ({
   setCurrentSong,
   currentSong,
   setSongs,
+  fullscreenStatus,
 }) => {
+  const [currentVolume, setCurrentVolume] = useState(100);
+
   //Event Handlers
   const playSongHanlder = () => {
     if (isPlaying) {
@@ -56,6 +71,13 @@ const Player = ({
     setSongInfo({ ...songInfo, currentTime: e.target.value });
   };
 
+  const changVolumeHandler = (e) => {
+    const curVolume = e.target.value / 100;
+    audioRef.current.volume = curVolume;
+    setCurrentVolume(curVolume);
+    console.log(curVolume);
+  };
+
   const skipTrackhanlder = async (direction) => {
     let currentIndex = songs.findIndex((song) => song.id === currentSong.id);
 
@@ -82,9 +104,14 @@ const Player = ({
     transform: `translateX(${songInfo.animationPercentage}%)`,
   };
 
+  const volumeAnim = {
+    transform: `translateX(${currentVolume * 100}%)`,
+  };
+
   return (
     <div className="player">
       <div className="time-control">
+        <Greeting isFullscreen={fullscreenStatus} currentSong={currentSong} />
         <p>{getTime(songInfo.currentTime)}</p>
         <div
           style={{
@@ -122,6 +149,18 @@ const Player = ({
           size="2x"
           icon={faAngleRight}
         />
+      </div>
+      <div className="volume-control">
+        <FontAwesomeIcon className="skip-forward" size="2x" icon={faVolumeUp} />
+        <div
+          style={{
+            background: `linear-gradient(to right, ${currentSong.color[0]},${currentSong.color[1]})`,
+          }}
+          className="volume"
+        >
+          <input min={0} max={100} onChange={changVolumeHandler} type="range" />
+          <div style={volumeAnim} className="animate-track"></div>
+        </div>
       </div>
     </div>
   );

@@ -16,6 +16,7 @@ function App() {
   const [currentSong, setCurrentSong] = useState(songs[0]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [libraryStatus, setLibraryStatus] = useState(false);
+  const [fullscreenStatus, setFullscreenStatus] = useState(true);
 
   //Ref
   const audioRef = useRef(null);
@@ -24,10 +25,7 @@ function App() {
     const current = e.target.currentTime;
     const duration = e.target.duration || 0;
     //Calc Percetnage
-    const roundedCurrent = Math.round(current);
-    const roundedDuration = Math.round(duration);
     const animationPercentage = Math.round((current / duration) * 100);
-    console.log(animationPercentage);
     setSongInfo({
       ...songInfo,
       currentTime: current,
@@ -51,10 +49,54 @@ function App() {
     if (isPlaying) audioRef.current.play();
   };
 
+  if (fullscreenStatus) {
+    return (
+      <div className={`App ${libraryStatus ? "library-active" : ""}`}>
+        <Nav
+          libraryStatus={libraryStatus}
+          setLibraryStatus={setLibraryStatus}
+          fullscreenStatus={fullscreenStatus}
+          setFullscreenStatus={setFullscreenStatus}
+        />
+        <Song currentSong={currentSong} fullscreenStatus={fullscreenStatus} />
+        <Player
+          currentSong={currentSong}
+          audioRef={audioRef}
+          isPlaying={isPlaying}
+          setIsPlaying={setIsPlaying}
+          setSongInfo={setSongInfo}
+          songInfo={songInfo}
+          songs={songs}
+          setCurrentSong={setCurrentSong}
+          setSongs={setSongs}
+        />
+        <Library
+          isPlaying={isPlaying}
+          audioRef={audioRef}
+          songs={songs}
+          setCurrentSong={setCurrentSong}
+          setSongs={setSongs}
+          libraryStatus={libraryStatus}
+        />
+        <audio
+          onTimeUpdate={timeUpdateHanlder}
+          onLoadedMetadata={timeUpdateHanlder}
+          ref={audioRef}
+          src={currentSong.audio}
+          onEnded={songEndHandler}
+        />
+      </div>
+    );
+  }
   return (
     <div className={`App ${libraryStatus ? "library-active" : ""}`}>
-      <Nav libraryStatus={libraryStatus} setLibraryStatus={setLibraryStatus} />
-      <Song currentSong={currentSong} />
+      <Nav
+        libraryStatus={libraryStatus}
+        setLibraryStatus={setLibraryStatus}
+        fullscreenStatus={fullscreenStatus}
+        setFullscreenStatus={setFullscreenStatus}
+      />
+      <Song currentSong={currentSong} fullscreenStatus={fullscreenStatus} />
       <Player
         currentSong={currentSong}
         audioRef={audioRef}
@@ -65,6 +107,7 @@ function App() {
         songs={songs}
         setCurrentSong={setCurrentSong}
         setSongs={setSongs}
+        fullscreenStatus={fullscreenStatus}
       />
       <Library
         isPlaying={isPlaying}
