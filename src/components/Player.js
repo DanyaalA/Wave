@@ -9,16 +9,6 @@ import {
   faVolumeUp,
 } from "@fortawesome/free-solid-svg-icons";
 
-function NormalSong(props) {
-  const isFullscreen = props.isFullscreen;
-  const currentSong = props.currentSong;
-
-  if (!isFullscreen) {
-    return <Song currentSong={currentSong} fullscreenStatus={isFullscreen} />;
-  }
-  return "";
-}
-
 const Player = ({
   audioRef,
   isPlaying,
