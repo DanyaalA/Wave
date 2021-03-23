@@ -89,6 +89,7 @@ function App() {
       </div>
     );
   }
+
   return (
     <div className={`App ${libraryStatus ? "library-active" : ""}`}>
       <Nav
